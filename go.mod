@@ -1,3 +1,3 @@
-module github.com/cnkei/gospline
+module github.com/darrylhuet/gospline
 
 go 1.13
