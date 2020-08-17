@@ -43,7 +43,7 @@ func NewCubicSpline(x, y []float64) Spline {
 
 // NewNaturalCubicSpline returns cubic spline with natural boundary
 // the boundaries are:
-//     f0: f''(x[0])
+//     f0: f''(x[0])kjk
 //     fn: f''(x[len(x)-1])
 func NewNaturalCubicSpline(x, y []float64, f0, fn float64) Spline {
 	return newSpline(x, y, CubicSecondDeriv, f0, fn)
@@ -57,7 +57,7 @@ func NewClampedCubicSpline(x, y []float64, f0, fn float64) Spline {
 	return newSpline(x, y, CubicFirstDeriv, f0, fn)
 }
 
-func (c *cubic) At(x float64) float64 {
+func (c *cubic) At(x float64) float64, [4]float64 {
 	nSegs := c.n - 1
 	if c.segs == nil {
 		c.segs = make([]*cubicSegment, nSegs)
@@ -82,8 +82,14 @@ func (c *cubic) At(x float64) float64 {
 	}
 	dxr := s.xr - x
 	dxl := x - s.xl
+	
+	Num := [4]float64
 
-	return dxr*(s.ar*dxr*dxr+s.br) + dxl*(s.al*dxl*dxl+s.bl)
+	Num[0] := s.ar+s.al
+	Num[1] := 3*(s.xr*s.ar-x.al*a.xl)
+	Num[2] := 3*(s.al*s.xl^3 + s.br + s.bl - s.xr^2 * s.ar)
+	Num[3] := s.ar*s.xr^3 + s.xr*s.br - s.al*s.xl^3 + s.bl*s.xl
+	return dxr*(s.ar*dxr*dxr+s.br) + dxl*(s.al*dxl*dxl+s.bl), Num
 }
 
 func (c *cubic) Range(start, end, step float64) []float64 {
