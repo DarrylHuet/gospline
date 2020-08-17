@@ -57,7 +57,7 @@ func NewClampedCubicSpline(x, y []float64, f0, fn float64) Spline {
 	return newSpline(x, y, CubicFirstDeriv, f0, fn)
 }
 
-func (c *cubic) At(x float64) float64, [4]float64 {
+func (c *cubic) At(x float64) float64; [4]float64 {
 	nSegs := c.n - 1
 	if c.segs == nil {
 		c.segs = make([]*cubicSegment, nSegs)
